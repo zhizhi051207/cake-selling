@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜蜜蛋糕店 - 在线订购</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>甜蜜蛋糕店</h1>
+            <nav>
+                <a href="#home" class="active">首页</a>
+                <a href="#products">蛋糕展示</a>
+                <a href="#cart" onclick="toggleCart()">购物车 (<span id="cart-count">0</span>)</a>
+                <a href="/admin">管理员</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 欢迎横幅 -->
+        <section id="home" class="hero">
+            <h2>欢迎来到甜蜜蛋糕店</h2>
+            <p>精选优质原料，用心制作每一款蛋糕</p>
+        </section>
+
+        <!-- 分类筛选 -->
+        <section class="filters">
+            <h3>蛋糕分类</h3>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterCakes('all')">全部</button>
+                <button class="filter-btn" onclick="filterCakes('巧克力系列')">巧克力系列</button>
+                <button class="filter-btn" onclick="filterCakes('水果系列')">水果系列</button>
+                <button class="filter-btn" onclick="filterCakes('芝士系列')">芝士系列</button>
+                <button class="filter-btn" onclick="filterCakes('抹茶系列')">抹茶系列</button>
+            </div>
+        </section>
+
+        <!-- 蛋糕展示 -->
+        <section id="products" class="products">
+            <h3>蛋糕展示</h3>
+            <div id="cakes-container" class="cakes-grid">
+                <!-- 动态加载蛋糕卡片 -->
+            </div>
+        </section>
+    </main>
+
+    <!-- 购物车侧边栏 -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>购物车</h3>
+            <button onclick="toggleCart()" class="close-btn">&times;</button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- 动态加载购物车项 -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>总计:</strong>
+                <span id="cart-total">¥0.00</span>
+            </div>
+            <button onclick="clearCart()" class="btn btn-secondary">清空购物车</button>
+            <button onclick="showCheckoutForm()" class="btn btn-primary">去结算</button>
+        </div>
+    </div>
+
+    <!-- 结算表单模态框 -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCheckout()">&times;</span>
+            <h2>确认订单</h2>
+            <form id="checkout-form">
+                <div class="form-group">
+                    <label for="customer-name">姓名:</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">电话:</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">配送地址:</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+                <div class="order-summary">
+                    <h4>订单摘要</h4>
+                    <div id="order-items"></div>
+                    <div class="order-total">
+                        <strong>总计:</strong>
+                        <span id="order-total">¥0.00</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">提交订单</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 遮罩层 -->
+    <div id="overlay" class="overlay" onclick="toggleCart()"></div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 甜蜜蛋糕店 | 营业时间: 9:00 - 21:00 | 电话: 400-123-4567</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

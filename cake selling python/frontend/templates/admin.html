@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员后台 - 甜蜜蛋糕店</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>甜蜜蛋糕店 - 管理后台</h1>
+            <nav>
+                <a href="/">返回首页</a>
+                <a href="#dashboard" class="active">仪表盘</a>
+                <a href="#manage-cakes">蛋糕管理</a>
+                <a href="#orders">订单管理</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 仪表盘 -->
+        <section id="dashboard" class="dashboard">
+            <h2>数据统计</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>总销售额</h3>
+                    <p class="stat-value" id="total-sales">¥0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>订单总数</h3>
+                    <p class="stat-value" id="total-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>待处理订单</h3>
+                    <p class="stat-value" id="pending-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>蛋糕种类</h3>
+                    <p class="stat-value" id="total-cakes">0</p>
+                </div>
+            </div>
+
+            <div class="popular-cakes">
+                <h3>热门蛋糕</h3>
+                <table id="popular-table">
+                    <thead>
+                        <tr>
+                            <th>蛋糕名称</th>
+                            <th>销售数量</th>
+                        </tr>
+                    </thead>
+                    <tbody id="popular-cakes-body">
+                        <!-- 动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 蛋糕管理 -->
+        <section id="manage-cakes" class="management-section">
+            <div class="section-header">
+                <h2>蛋糕管理</h2>
+                <button onclick="showAddCakeForm()" class="btn btn-primary">添加新蛋糕</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>图片</th>
+                            <th>名称</th>
+                            <th>描述</th>
+                            <th>价格</th>
+                            <th>分类</th>
+                            <th>库存</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cakes-table-body">
+                        <!-- 动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 订单管理 -->
+        <section id="orders" class="management-section">
+            <h2>订单管理</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>订单号</th>
+                            <th>客户姓名</th>
+                            <th>电话</th>
+                            <th>地址</th>
+                            <th>总金额</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-table-body">
+                        <!-- 动态加载 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 添加/编辑蛋糕模态框 -->
+    <div id="cake-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCakeModal()">&times;</span>
+            <h2 id="cake-modal-title">添加蛋糕</h2>
+            <form id="cake-form">
+                <input type="hidden" id="cake-id">
+                <div class="form-group">
+                    <label for="cake-name">蛋糕名称:</label>
+                    <input type="text" id="cake-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="cake-description">描述:</label>
+                    <textarea id="cake-description" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cake-price">价格 (¥):</label>
+                        <input type="number" id="cake-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cake-stock">库存:</label>
+                        <input type="number" id="cake-stock" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="cake-category">分类:</label>
+                    <select id="cake-category" required>
+                        <option value="">选择分类</option>
+                        <option value="巧克力系列">巧克力系列</option>
+                        <option value="水果系列">水果系列</option>
+                        <option value="芝士系列">芝士系列</option>
+                        <option value="抹茶系列">抹茶系列</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="cake-image">图片URL:</label>
+                    <input type="url" id="cake-image">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">保存</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 订单详情模态框 -->
+    <div id="order-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeOrderDetailModal()">&times;</span>
+            <h2>订单详情</h2>
+            <div id="order-detail-content">
+                <!-- 动态加载 -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 甜蜜蛋糕店管理系统</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>
